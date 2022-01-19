@@ -29,7 +29,7 @@ routes.post("/", async (req, res) => {
     console.log("Data saved");
     res.status(201).json(dep);
   } catch (err) {
-    res.status(404).send("ERROR" + err.message);
+    res.status(404).send("ERROR " + err.message);
   }
 });
 

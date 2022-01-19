@@ -1,4 +1,5 @@
 const express = require("express");
+const { reset } = require("nodemon");
 const { find } = require("../Models/employeeModel");
 const routes = express.Router();
 const employee = require("../Models/employeeModel");
@@ -26,11 +27,22 @@ routes.get("/:id", async (req, res) => {
   }
 });
 
-routes.get("/:name", async (req, res) => {
+//search by name
+routes.get("/byName/:key", async (req, res) => {
   try {
-    const name = req.params.name;
-    const emp = employee.find(name);
-    console.log(name);
+    const key = req.params.key;
+    const emp = await employee.find({ name: key });
+    res.json(emp);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
+
+//Search by name using regex
+routes.get("/byName/:key", async (req, res) => {
+  let regex = RegExp(req.params.key, "i");
+  try {
+    const emp = await employee.find({ name: regex });
     res.json(emp);
   } catch (err) {
     res.status(404).send(err.message);
@@ -73,6 +85,34 @@ routes.delete("/:id", async (req, res) => {
     res.json(empDelete);
   } catch (err) {
     res.status(500).send(err.message);
+  }
+});
+
+//query
+// routes.get("/search/:name", async (req, res) => {
+//
+//   try {
+//     const result = await employee.find({ name: regex });
+//     console.leg(result);
+//     res.json(result);
+//   } catch (err) {
+//     res.status(400).send(err.message);
+//   }
+// });
+
+routes.get("/search/:key", async (req, res) => {
+  try {
+    const key = req.params.key;
+    const data = await employee.find({
+      $or: [
+        { name: { $regex: key } },
+        { designation: { $regex: key } },
+        { department: { $regex: key } },
+      ],
+    });
+    res.json(data);
+  } catch (err) {
+    res.status(404).send(err.message);
   }
 });
 
