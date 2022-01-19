@@ -1,3 +1,7 @@
+// Designation
+//  - Designation id
+//  - Designation name
+
 const mongoose = require("mongoose");
 
 const designationSchema = new mongoose.Schema({

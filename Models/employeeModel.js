@@ -1,3 +1,13 @@
+// Employee
+//  - Emp id (primary key)
+//  - Emp name (first name, last name)
+//  - Emp email (office , personal)
+//  - Emp phone number
+//  - Emp joining date
+//  - Dept id (foreign key)
+//  - Designation id
+//  - Leader/Mentor/Manager id (foreign key)
+
 const mongoose = require("mongoose");
 
 const employeeSchema = new mongoose.Schema({

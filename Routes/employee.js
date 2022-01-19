@@ -1,38 +1,80 @@
 const express = require("express");
+const { find } = require("../Models/employeeModel");
 const routes = express.Router();
 const employee = require("../Models/employeeModel");
 
+//Read
 routes.get("/", async (req, res) => {
   try {
     const employees = await employee.find();
     res.json(employees);
   } catch (err) {
-    res.send(err);
+    res.status(404).send(err.message);
   }
 });
 
 routes.get("/:id", async (req, res) => {
   try {
     const employees = await employee.findById(req.params.id);
-    res.json(employees);
+    if (!employees) {
+      res.status(404).json();
+    } else {
+      res.json(employees);
+    }
   } catch (err) {
-    res.send(err);
+    res.status(404).send(err.message);
   }
 });
 
-routes.post("/", async (req, res) => {
-  const employeeDetails = new employee({
-    name: req.body.name,
-    email: req.body.email,
-    contact_number: req.body.contact_number,
-  });
-
+routes.get("/:name", async (req, res) => {
   try {
-    const e1 = await employeeDetails.save();
-    res.json(e1);
+    const name = req.params.name;
+    const emp = employee.find(name);
+    console.log(name);
+    res.json(emp);
   } catch (err) {
-    res.send("ERROR" + err);
+    res.status(404).send(err.message);
   }
 });
 
+//Create
+routes.post("/", async (req, res) => {
+  const employeeDetails = new employee(req.body);
+  try {
+    const emp = await employeeDetails.save();
+    console.log("Data saved");
+    res.status(201).json(emp);
+  } catch (err) {
+    res.status(404).send("ERROR" + err.message);
+  }
+});
+
+//Update
+routes.patch("/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const employeeUpdate = await employee.findByIdAndUpdate(_id, req.body, {
+      new: true,
+    });
+    res.json(employeeUpdate);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
+
+//Delete
+routes.delete("/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const empDelete = await employee.findOneAndDelete(_id);
+    if (!_id) {
+      return res.status(400).send();
+    }
+    res.json(empDelete);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+//Module export
 module.exports = routes;

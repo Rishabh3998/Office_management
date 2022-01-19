@@ -1,3 +1,9 @@
+// Department
+//  - Dept id (primary key)
+//  - Dept name
+//  - Dept head
+//  - Dept type (tech, business, product, HR)
+
 const mongoose = require("mongoose");
 
 const departmentSchema = new mongoose.Schema({
