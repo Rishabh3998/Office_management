@@ -1,0 +1,19 @@
+{
+  "name": "office_management",
+  "version": "1.0.0",
+  "description": "This is an office management software that contains some data with some api calls through which we can fo CRUD operations.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "Rishabh kumar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mongodb": "^4.3.0",
+    "mongoose": "^6.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
