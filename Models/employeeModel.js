@@ -1,15 +1,15 @@
 // Employee
-//  - Emp id (primary key) genrated by MongoDB
+//  - Emp id
 //  - Emp name
 //  - Emp email
 //  - Emp phone number
 //  - Emp joining date
-//  - Dept id (foreign key)
+//  - Dept id
 //  - Designation id
 
 const mongoose = require("mongoose");
-const designation = require("./designationModel");
-const department = require("./departmentModel");
+const Designation = require("./designationModel");
+const Department = require("./departmentModel");
 
 const employeeSchema = new mongoose.Schema({
   name: {
@@ -30,7 +30,7 @@ const employeeSchema = new mongoose.Schema({
   },
 
   joining_date: {
-    type: String,
+    type: Date,
     required: true,
   },
 
@@ -41,12 +41,18 @@ const employeeSchema = new mongoose.Schema({
 
   designation_id: {
     type: mongoose.Types.ObjectId,
-    ref: "designation",
+    ref: "Designation",
+    required: true,
   },
 
   department_id: {
     type: mongoose.Types.ObjectId,
-    ref: "department",
+    ref: "Department",
+    required: true,
+  },
+
+  managerId: {
+    type: mongoose.Types.ObjectId,
   },
 });
 

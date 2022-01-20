@@ -14,19 +14,6 @@ routes.get("/", async (req, res) => {
   }
 });
 
-routes.get("/:id", async (req, res) => {
-  try {
-    const employees = await employee.findById(req.params.id);
-    if (!employees) {
-      res.status(404).json();
-    } else {
-      res.json(employees);
-    }
-  } catch (err) {
-    res.status(404).send(err.message);
-  }
-});
-
 //search by name
 routes.get("/byName/:key", async (req, res) => {
   try {
@@ -61,6 +48,98 @@ routes.post("/", async (req, res) => {
   }
 });
 
+//query
+// routes.get("/search/:name", async (req, res) => {
+//
+//   try {
+//     const result = await employee.find({ name: regex });
+//     console.leg(result);
+//     res.json(result);
+//   } catch (err) {
+//     res.status(400).send(err.message);
+//   }
+// });
+
+// routes.get("/search/:key", async (req, res) => {
+//   try {
+//     const key = req.params.key;
+//     const data = await employee.find({
+//       $or: [
+//         { name: { $regex: key } },
+//         { designation: { $regex: key } },
+//         { department: { $regex: key } },
+//       ],
+//     });
+//     res.json(data);
+//   } catch (err) {
+//     res.status(404).send(err.message);
+//   }
+// });
+
+//List of Employee designation wise
+routes.get("/query", async (req, res) => {
+  try {
+    const query = req.query;
+    const regex = RegExp(query.profile, "i");
+    const data = await employee.find({
+      profile: regex,
+    });
+    res.json(data);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
+
+//Employee month Write
+// routes.get("/query", async (req, res) => {
+//   try {
+//   } catch (err) {}
+// });
+
+// routes.get("/query", async (req, res) => {
+//   try {
+//     const query = req.query;
+//     console.log(query);
+//     const data = await employee.find({
+//       // $or: [{ name: query.name }, { profile: query.profile }],
+//       $and: [{ name: query.name }, { profile: query.profile }],
+//     });
+//     console.log(data);
+//     res.json(data);
+//   } catch (err) {
+//     res.status(404).send(err.message);
+//   }
+// });
+
+//ID Endpoints
+//Read
+routes.get("/:id", async (req, res) => {
+  try {
+    const employees = await employee.findById(req.params.id);
+    if (!employees) {
+      res.status(404).json();
+    } else {
+      res.json(employees);
+    }
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
+
+// //List of Employee department wise
+// routes.get("/:id", async (req, res) => {
+//   try {
+//     const query = req.params.id;
+//     console.log(query);
+//     const data = await employee.findById({
+//       query,
+//     });
+//     res.json(data);
+//   } catch (err) {
+//     res.status(404).send(err.message);
+//   }
+// });
+
 //Update
 routes.patch("/:id", async (req, res) => {
   try {
@@ -78,41 +157,13 @@ routes.patch("/:id", async (req, res) => {
 routes.delete("/:id", async (req, res) => {
   try {
     const _id = req.params.id;
-    const empDelete = await employee.findOneAndDelete(_id);
+    const empDelete = await employee.findByIdAndDelete(_id);
     if (!_id) {
       return res.status(400).send();
     }
     res.json(empDelete);
   } catch (err) {
     res.status(500).send(err.message);
-  }
-});
-
-//query
-// routes.get("/search/:name", async (req, res) => {
-//
-//   try {
-//     const result = await employee.find({ name: regex });
-//     console.leg(result);
-//     res.json(result);
-//   } catch (err) {
-//     res.status(400).send(err.message);
-//   }
-// });
-
-routes.get("/search/:key", async (req, res) => {
-  try {
-    const key = req.params.key;
-    const data = await employee.find({
-      $or: [
-        { name: { $regex: key } },
-        { designation: { $regex: key } },
-        { department: { $regex: key } },
-      ],
-    });
-    res.json(data);
-  } catch (err) {
-    res.status(404).send(err.message);
   }
 });
 

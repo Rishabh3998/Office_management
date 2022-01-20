@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "61e87c4187719e91d5e3006f",
+    "name": "Residential pod",
+    "head": "Rishabhjit singh",
+    "genre": "Technology",
+    "__v": 0
+  },
+  {
+    "_id": "61e87c5387719e91d5e30071",
+    "name": "Commercial pod",
+    "head": "Shubham singh",
+    "genre": "Technology",
+    "__v": 0
+  },
+  {
+    "_id": "61e87c7287719e91d5e30073",
+    "name": "Employee Experience",
+    "head": "Priyanka lal",
+    "genre": "HR",
+    "__v": 0
+  },
+  {
+    "_id": "61e87c9187719e91d5e30075",
+    "name": "Support",
+    "head": "Vikas yadav",
+    "genre": "IT Support",
+    "__v": 0
+  }
+]

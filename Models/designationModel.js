@@ -1,10 +1,10 @@
-// Designation
+// Designation Schema
 //  - Designation id
-//  - Designation name  (Software engineer)
-//  - Department id (technology)
+//  - Designation name
+//  - Department id
 
 const mongoose = require("mongoose");
-const department = require("./departmentModel");
+const Department = require("./departmentModel");
 
 const designationSchema = new mongoose.Schema({
   name: {
@@ -14,7 +14,7 @@ const designationSchema = new mongoose.Schema({
 
   department_id: {
     type: mongoose.Types.ObjectId,
-    ref: "department",
+    ref: "Department",
     required: true,
   },
 });

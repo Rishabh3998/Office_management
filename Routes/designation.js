@@ -54,7 +54,7 @@ routes.patch("/:id", async (req, res) => {
 routes.delete("/:id", async (req, res) => {
   try {
     const _id = req.params.id;
-    const desDelete = await designation.findOneAndDelete(_id);
+    const desDelete = await designation.findByIdAndDelete(_id);
     if (!_id) {
       return res.status(400).send();
     }

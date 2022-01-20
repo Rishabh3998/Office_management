@@ -1,23 +1,19 @@
-// Leadership
-//  - Emp id (foreign key)
-//  - Manager id (FK)
+// Leadership Schema
+//  - Emp id
+//  - Manager id
 
 const mongoose = require("mongoose");
 
 const leadershipSchema = new mongoose.Schema({
-  //   name: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   head: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   genre: {
-  //     type: [String],
-  //     required: true,
-  //     unique: true,
-  //   },
+  empId: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
+
+  managerId: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Leadership", leadershipSchema);

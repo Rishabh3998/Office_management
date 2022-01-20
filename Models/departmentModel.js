@@ -1,15 +1,13 @@
-// Department
-//  - Dept id (primary key) generated
+// Department Schema
+//  - Dept id
 //  - Dept name
 //  - Dept head
-//  - Dept type/genre (tech, business, product, HR)
+//  - Dept genre
 
 const mongoose = require("mongoose");
 
 const departmentSchema = new mongoose.Schema({
   name: {
-    //residential pod
-    //employee experience
     type: String,
     required: true,
   },
@@ -20,8 +18,6 @@ const departmentSchema = new mongoose.Schema({
   },
 
   genre: {
-    //technology
-    //HR
     type: String,
     required: true,
   },
