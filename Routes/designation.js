@@ -4,18 +4,10 @@ const designation = require("../Models/designationModel");
 
 //Read
 routes.get("/", async (req, res) => {
+  //This will give the list of all the designations in the company.
   try {
     const designations = await designation.find();
-    res.json(designations);
-  } catch (err) {
-    res.status(404).send(err.message);
-  }
-});
-
-routes.get("/:id", async (req, res) => {
-  try {
-    const designations = await designation.findById(req.params.id);
-    res.json(designations);
+    res.status(200).json(designations);
   } catch (err) {
     res.status(404).send(err.message);
   }
@@ -23,6 +15,7 @@ routes.get("/:id", async (req, res) => {
 
 //Create
 routes.post("/", async (req, res) => {
+  //This will create a new designation.
   const designationDetails = new designation(req.body);
   try {
     const des = await designationDetails.save();
@@ -33,8 +26,20 @@ routes.post("/", async (req, res) => {
   }
 });
 
+// ID field endpoints
+routes.get("/:id", async (req, res) => {
+  //This will find designation info by using its ID.
+  try {
+    const designations = await designation.findById(req.params.id);
+    res.json(designations);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
+
 //Update
 routes.patch("/:id", async (req, res) => {
+  //This will find designation by using its ID the update it.
   try {
     const _id = req.params.id;
     const designationUpdate = await designation.findByIdAndUpdate(
@@ -52,6 +57,7 @@ routes.patch("/:id", async (req, res) => {
 
 //Delete
 routes.delete("/:id", async (req, res) => {
+  //This will find designation using its ID the delete it.
   try {
     const _id = req.params.id;
     const desDelete = await designation.findByIdAndDelete(_id);

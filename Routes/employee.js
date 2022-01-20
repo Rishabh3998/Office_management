@@ -6,16 +6,31 @@ const employee = require("../Models/employeeModel");
 
 //Read
 routes.get("/", async (req, res) => {
+  //This will give all the employees details in the company.
   try {
     const employees = await employee.find();
-    res.json(employees);
+    res.status(200).json(employees);
   } catch (err) {
     res.status(404).send(err.message);
   }
 });
 
+//Create
+routes.post("/", async (req, res) => {
+  //This will create a new employee in the database.
+  const employeeDetails = new employee(req.body);
+  try {
+    const emp = await employeeDetails.save();
+    console.log("Data saved");
+    res.status(201).json(emp);
+  } catch (err) {
+    res.status(404).send("ERROR " + err.message);
+  }
+});
+
 //search by name
 routes.get("/byName/:key", async (req, res) => {
+  //This will search the employee by his/her name.
   try {
     const key = req.params.key;
     const emp = await employee.find({ name: key });
@@ -27,6 +42,7 @@ routes.get("/byName/:key", async (req, res) => {
 
 //Search by name using regex
 routes.get("/byName/:key", async (req, res) => {
+  //This will search the employee by his/her name with regex.
   let regex = RegExp(req.params.key, "i");
   try {
     const emp = await employee.find({ name: regex });
@@ -36,65 +52,59 @@ routes.get("/byName/:key", async (req, res) => {
   }
 });
 
-//Create
-routes.post("/", async (req, res) => {
-  const employeeDetails = new employee(req.body);
-  try {
-    const emp = await employeeDetails.save();
-    console.log("Data saved");
-    res.status(201).json(emp);
-  } catch (err) {
-    res.status(404).send("ERROR" + err.message);
-  }
-});
-
-//query
-// routes.get("/search/:name", async (req, res) => {
-//
-//   try {
-//     const result = await employee.find({ name: regex });
-//     console.leg(result);
-//     res.json(result);
-//   } catch (err) {
-//     res.status(400).send(err.message);
-//   }
-// });
-
-// routes.get("/search/:key", async (req, res) => {
-//   try {
-//     const key = req.params.key;
-//     const data = await employee.find({
-//       $or: [
-//         { name: { $regex: key } },
-//         { designation: { $regex: key } },
-//         { department: { $regex: key } },
-//       ],
-//     });
-//     res.json(data);
-//   } catch (err) {
-//     res.status(404).send(err.message);
-//   }
-// });
-
 //List of Employee designation wise
 routes.get("/query", async (req, res) => {
+  //This will give the details of the employees according to their designation.
   try {
     const query = req.query;
+    console.log(query);
     const regex = RegExp(query.profile, "i");
     const data = await employee.find({
       profile: regex,
     });
-    res.json(data);
+    res.status(200).json(data);
   } catch (err) {
     res.status(404).send(err.message);
   }
 });
 
-//Employee month Write
-// routes.get("/query", async (req, res) => {
-//   try {
-//   } catch (err) {}
-// });
+//List of Employee department wise
+routes.get("/query", async (req, res) => {
+  //This will give the details of the employees according to their department.
+  try {
+    const dept = req.query;
+    console.log(dept.department_id);
+    const data = await employee.find({ department_id });
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
+
+//Statistic API
+routes.get("/statistic/totalEmp", async (req, res) => {
+  //This will give the count of total employees.
+  try {
+    const total = await employee.countDocuments();
+    console.log(total);
+    res.sendStatus(200).send(total);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
+
+routes.get("/statistic/totalEmp/:profile", async (req, res) => {
+  //This will give the total employees according to their desigantion.
+  try {
+    const role = req.params.profile;
+    const regex = RegExp(role, "i");
+    const total = await employee.find({ profile: regex }).countDocuments();
+    console.log(total);
+    res.sendStatus(200).send(total);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
 
 // routes.get("/query", async (req, res) => {
 //   try {

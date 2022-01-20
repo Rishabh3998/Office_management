@@ -4,6 +4,7 @@ const leadership = require("../Models/leadershipModel");
 
 //Read
 routes.get("/", async (req, res) => {
+  //This will find all the leaderships in the company.
   try {
     const leaderships = await leadership.find().exec();
     res.json(leaderships);
@@ -12,7 +13,21 @@ routes.get("/", async (req, res) => {
   }
 });
 
+//Create
+routes.post("/", async (req, res) => {
+  //This will create a new leadership.
+  const leadershipDetails = new leadership(req.body);
+  try {
+    const lead = await leadershipDetails.save();
+    res.status(201).json(lead);
+  } catch (err) {
+    res.status(500).send("ERROR" + err.message);
+  }
+});
+
+//ID field endpoints
 routes.get("/:id", async (req, res) => {
+  //This will find a leadership by using its ID.
   try {
     const leaderships = await leadership.findById(req.params.id).exec();
     res.json(leaderships);
@@ -21,20 +36,9 @@ routes.get("/:id", async (req, res) => {
   }
 });
 
-//Create
-routes.post("/", async (req, res) => {
-  const leadershipDetails = new leadership(req.body);
-  try {
-    const lead = await leadershipDetails.save();
-    console.log("Data saved");
-    res.status(201).json(lead);
-  } catch (err) {
-    res.status(500).send("ERROR" + err.message);
-  }
-});
-
 //Update
 routes.patch("/:id", async (req, res) => {
+  //This will find a leadership using its ID the it will update it.
   try {
     const _id = req.params.id;
     const leadershipUpdate = await leadership.findByIdAndUpdate(_id, req.body, {
@@ -48,6 +52,7 @@ routes.patch("/:id", async (req, res) => {
 
 //Delete
 routes.delete("/:id", async (req, res) => {
+  //This will find a leadership using its ID the it will delete it.
   try {
     const _id = req.params.id;
     const leadershipDelete = await leadership.findByIdAndDelete(_id);
@@ -60,7 +65,7 @@ routes.delete("/:id", async (req, res) => {
   }
 });
 
-//Find employees under a manager
+//This will find all employees under a manager
 routes.get("/manager/:managerId", async (req, res) => {
   try {
     const _id = req.params.managerId;
@@ -80,5 +85,6 @@ routes.get("/manager/:managerId", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
+
 //Module export
 module.exports = routes;

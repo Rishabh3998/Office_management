@@ -1,4 +1,4 @@
-// Employee
+// Employee Schema
 //  - Emp id
 //  - Emp name
 //  - Emp email
