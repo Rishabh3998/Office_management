@@ -68,26 +68,27 @@ routes.get("/query", async (req, res) => {
   }
 });
 
-//List of Employee department wise
-routes.get("/query", async (req, res) => {
-  //This will give the details of the employees according to their department.
+//Statistic API
+routes.get("/statistic/totalEmp", async (req, res) => {
+  //This will give the count of total employees.
   try {
-    const dept = req.query;
-    console.log(dept.department_id);
-    const data = await employee.find({ department_id });
-    res.status(200).json(data);
+    const total = await employee.find({}).countDocuments();
+    res.json(total);
   } catch (err) {
     res.status(404).send(err.message);
   }
 });
 
-//Statistic API
-routes.get("/statistic/totalEmp", async (req, res) => {
-  //This will give the count of total employees.
+//List of Employee department wise(ID)
+routes.get("/statistic/byDepartment/:id", async (req, res) => {
   try {
-    const total = await employee.countDocuments();
-    console.log(total);
-    res.sendStatus(200).send(total);
+    const query = req.params.id;
+    const data = await employee
+      .find({
+        department_id: query,
+      })
+      .countDocuments();
+    res.json(data);
   } catch (err) {
     res.status(404).send(err.message);
   }
@@ -106,21 +107,6 @@ routes.get("/statistic/totalEmp/:profile", async (req, res) => {
   }
 });
 
-// routes.get("/query", async (req, res) => {
-//   try {
-//     const query = req.query;
-//     console.log(query);
-//     const data = await employee.find({
-//       // $or: [{ name: query.name }, { profile: query.profile }],
-//       $and: [{ name: query.name }, { profile: query.profile }],
-//     });
-//     console.log(data);
-//     res.json(data);
-//   } catch (err) {
-//     res.status(404).send(err.message);
-//   }
-// });
-
 //ID Endpoints
 //Read
 routes.get("/:id", async (req, res) => {
@@ -136,19 +122,35 @@ routes.get("/:id", async (req, res) => {
   }
 });
 
-// //List of Employee department wise
-// routes.get("/:id", async (req, res) => {
-//   try {
-//     const query = req.params.id;
-//     console.log(query);
-//     const data = await employee.findById({
-//       query,
-//     });
-//     res.json(data);
-//   } catch (err) {
-//     res.status(404).send(err.message);
-//   }
-// });
+//List of Employee department wise(ID)
+routes.get("/byDepartment/:id", async (req, res) => {
+  try {
+    const query = req.params.id;
+    const data = await employee
+      .find({
+        department_id: query,
+      })
+      .exec();
+    res.json(data);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
+
+//List of Employee designation wise(ID)
+routes.get("/byDesignation/:id", async (req, res) => {
+  try {
+    const query = req.params.id;
+    const data = await employee
+      .find({
+        designation_id: query,
+      })
+      .exec();
+    res.json(data);
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
+});
 
 //Update
 routes.patch("/:id", async (req, res) => {
